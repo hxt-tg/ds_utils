@@ -2,9 +2,10 @@
 #include "complex.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 Complex createComplex(double real, double imag) {
-    Complex complex = (Complex) malloc(sizeof(struct Complex));
+    Complex complex = (Complex) malloc(sizeof(struct ComplexS));
     complex->real = real;
     complex->imag = imag;
     return complex;
@@ -23,13 +24,14 @@ Complex addComplex(Complex dest, Complex com) {
 Complex subComplex(Complex dest, Complex com) {
     dest->real -= com->real;
     dest->imag -= com->imag;
+    return dest;
 }
 
 Complex mulComplex(Complex dest, Complex com) {
     double temp_real = dest->real * com->real - dest->imag * com->imag;
     dest->imag = dest->real * com->imag + dest->imag * com->real;
     dest->real = temp_real;
-    return dest;  
+    return dest;
 }
 
 Complex divComplex(Complex dest, Complex com) {
@@ -38,26 +40,22 @@ Complex divComplex(Complex dest, Complex com) {
     temp_real = (dest->real * com->real + dest->imag * com->imag) / denominator;
     dest->imag = (dest->imag * com->real - dest->real * com->imag) / denominator;
     dest->real = temp_real;
-    return dest; 
+    return dest;
 }
 
-void printComplex(Complex com) {
-    if (com->real == 0 && com->imag == 0) {
-        printf("0");
-    } else if (com->real == 0 && com->imag == 1) {
-        printf("i");
-    } else if (com->real == 0 && com->imag == -1) {
-        printf("-i");
-    } else if (com->real == 0){
-        printf("%lfi");
-    } else if (com->imag == 0) {
-        printf("%lf", com->real);
-    } else if (com->imag < 0) {
-        printf("%lf%lfi", com->real, com->imag);    
-    } else {
-        printf("%lf+%lfi", com->real, com->imag);
-    } 
-    printf("\n");
+int printComplex(Complex com) {
+    char _img[80];
+    sprintf(_img, "%g", com->imag);
+    int len = 0;
+    if (fabs(com->real-0)>1E-7)    /* real part > 0 ? */
+        len += printf("%g%s",com->real, com->imag > 0.0 ? "+":"");
+    if (fabs(com->imag-0)>1E-7)    /* imaginary part > 0 ? */
+        len += printf("%si",fabs(com->imag-1)<=1E-7 ? "" : fabs(com->imag+1)<=1E-7
+                ? "-" : _img);
+    if (!len)                        /* print 0 when real part and imaginary part is 0 */
+        len += printf("0");
+    len += printf("\n");
+    return len;
 }
 
 

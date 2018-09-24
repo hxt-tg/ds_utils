@@ -16,15 +16,15 @@ void fuck2(){
 void stackTestForComplexStruct(){
     printf("========[Stack Test For Complex Struct]========\n");
     int i;
-    struct Complex     com1 = {1, 2},
+    struct ComplexS com1 = {1, 2},
                     com2 = {3, 4};
-    Stack s = createStack(sizeof(struct Complex));
+    Stack s = createStack(sizeof(struct ComplexS));
     for (i = 0; i < 10; i++){
         pushStack(s, &com1);
         pushStack(s, &com2);
     }
     printf("Size: %d\nPop 6 elements:\n", stackSize(s));
-    struct Complex temp;
+    struct ComplexS temp;
     for (i = 0; i < 6; i++){
         popStack(s, &temp);
         printComplex(&temp);
@@ -35,7 +35,7 @@ void stackTestForComplexStruct(){
 void stackTestForFunctionPointer(){
     printf("========[Stack Test For Function Pointer]========\n");
     int i;
-    void *p1 = fuck1, *p2 = fuck2;
+    void *p1 = (void *)fuck1, *p2 = (void *)fuck2;
     Stack s = createStack(sizeof(void *));
     for (i = 0; i < 10; i++){
         pushStack(s, &p1);
