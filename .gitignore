@@ -1,4 +1,5 @@
 # Object files
+#
 *.o
 *.ko
 *.obj
@@ -33,4 +34,5 @@
 
 # DIY
 bin/
+*_test
 
